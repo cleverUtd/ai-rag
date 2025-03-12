@@ -9,4 +9,11 @@
     <artifactId>ai-rag-trigger</artifactId>
     <name>Archetype - ai-rag-trigger</name>
     <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
 </project>
