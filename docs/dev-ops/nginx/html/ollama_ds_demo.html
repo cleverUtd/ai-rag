@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 对话助手</title>
+    <style>
+        :root {
+            --primary-color: #10a37f;
+            --bg-color: #f0f2f5;
+            --user-bg: #ffffff;
+            --ai-bg: #f8f9fa;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-box {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .message {
+            margin: 12px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .user-message {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+        }
+
+        .user-message .message-bubble {
+            background: var(--user-bg);
+            border: 1px solid #e5e7eb;
+        }
+
+        .ai-message .message-bubble {
+            background: var(--ai-bg);
+            border: 1px solid #e5e7eb;
+            white-space: pre-wrap;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+        }
+
+        button {
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="chat-box" id="chatBox"></div>
+    <div class="input-area">
+        <input type="text" id="input" placeholder="输入你的问题..." />
+        <button id="sendBtn">发送</button>
+    </div>
+</div>
+
+<script>
+    const chatBox = document.getElementById('chatBox');
+    const input = document.getElementById('input');
+    const sendBtn = document.getElementById('sendBtn');
+    let eventSource = null;
+
+    // 添加用户消息
+    function addUserMessage(content) {
+        const div = document.createElement('div');
+        div.className = 'message user-message';
+        div.innerHTML = `
+                <div class="message-bubble">${content}</div>
+            `;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // 添加AI消息（流式）
+    function createAIMessage() {
+        const div = document.createElement('div');
+        div.className = 'message ai-message';
+        div.innerHTML = `
+                <div class="message-bubble"></div>
+            `;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return div.querySelector('.message-bubble');
+    }
+
+    // 调用API
+    function callAPI(message) {
+        const apiUrl = `http://localhost:8090/api/v1/ollama/ai/generateStream?message=${encodeURIComponent(message)}`;
+
+        const aiBubble = createAIMessage();
+        let fullResponse = '';
+
+        eventSource = new EventSource(apiUrl);
+
+        eventSource.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                const content = data.result?.output?.text || '';
+                const finishReason = data.result?.metadata?.finishReason;
+
+                if (content) {
+                    fullResponse += content;
+                    aiBubble.textContent = fullResponse;
+                }
+
+                if (finishReason === 'stop') {
+                    eventSource.close();
+                    sendBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('解析错误:', error);
+            }
+        };
+
+        eventSource.onerror = (error) => {
+            console.error('EventSource错误:', error);
+            eventSource.close();
+            sendBtn.disabled = false;
+        };
+    }
+
+    // 发送消息
+    function sendMessage() {
+        const message = input.value.trim();
+        if (!message) return;
+
+        addUserMessage(message);
+        input.value = '';
+        sendBtn.disabled = true;
+
+        callAPI(message);
+    }
+
+    // 事件监听
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+</script>
+</body>
+</html>

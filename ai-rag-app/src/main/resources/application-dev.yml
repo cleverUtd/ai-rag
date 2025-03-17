@@ -1,5 +1,7 @@
 server:
   port: 8090
+  tomcat:
+    keep-alive-timeout: 600000
 
 spring:
   ai:
