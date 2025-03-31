@@ -7,8 +7,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>ai-rag-trigger</artifactId>
-    <name>Archetype - ai-rag-trigger</name>
-    <url>http://maven.apache.org</url>
 
     <dependencies>
         <dependency>

@@ -4,12 +4,26 @@ server:
     keep-alive-timeout: 600000
 
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://127.0.0.1:15432/ai-rag-knowledge
+    type: com.zaxxer.hikari.HikariDataSource
   ai:
     ollama:
       base-url: http://127.0.0.1:11434
       chat:
         options:
           model: deepseek-r1:1.5b
+      embedding:
+        options:
+          num-batch: 512
+        model: nomic-embed-text
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+
 
 # Redis
 redis:

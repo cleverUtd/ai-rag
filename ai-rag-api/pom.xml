@@ -7,6 +7,4 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>ai-rag-api</artifactId>
-    <name>Archetype - ai-rag-api</name>
-    <url>http://maven.apache.org</url>
 </project>
