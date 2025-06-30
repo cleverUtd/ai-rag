@@ -16,13 +16,23 @@ spring:
       chat:
         options:
           model: deepseek-r1:1.5b
+        enabled: false
       embedding:
         options:
           num-batch: 512
         model: nomic-embed-text
+        enabled: false
+    openai:
+      base-url: https://api.siliconflow.cn
+      api-key:
+      embedding:
+        options:
+          model: BAAI/bge-m3
+          dimensions: 1024
     vectorstore:
       pgvector:
         initialize-schema: true
+        dimensions: 1024
 
 
 # Redis
