@@ -225,9 +225,6 @@ function startEventStream(message) {
         currentEventSource.close();
     }
 
-    // 选项值，
-    // 组装01；http://localhost:8090/api/v1/ollama/generate_stream?message=Hello&model=deepseek-r1:1.5b
-    // 组装02；http://localhost:8090/api/v1/openai/generate_stream?message=Hello&model=gpt-4o
     const ragTag = document.getElementById('ragSelect').value;
     const aiModelSelect = document.getElementById('aiModel');
     const aiModelValue = aiModelSelect.value; // 获取选中的 aiModel 的 value
@@ -236,9 +233,9 @@ function startEventStream(message) {
     let url;
 
     if (ragTag) {
-        url = `http://localhost:8090/api/v1/${aiModelValue}/generate_stream_rag?message=${encodeURIComponent(message)}&ragTag=${encodeURIComponent(ragTag)}&model=${encodeURIComponent(aiModelModel)}`;
+        url = `http://localhost:8090/api/v1/${aiModelValue}/generateStreamRag?message=${encodeURIComponent(message)}&ragTag=${encodeURIComponent(ragTag)}&model=${encodeURIComponent(aiModelModel)}`;
     } else {
-        url = `http://localhost:8090/api/v1/${aiModelValue}/generate_stream?message=${encodeURIComponent(message)}&model=${encodeURIComponent(aiModelModel)}`;
+        url = `http://localhost:8090/api/v1/${aiModelValue}/generateRag?message=${encodeURIComponent(message)}&model=${encodeURIComponent(aiModelModel)}`;
     }
 
     currentEventSource = new EventSource(url);
@@ -249,8 +246,8 @@ function startEventStream(message) {
         try {
             const data = JSON.parse(event.data);
 
-            if (data.result?.output?.content) {
-                const newContent = data.result.output.content;
+            if (data.result?.output?.text) {
+                const newContent = data.result.output.text;
                 accumulatedContent += newContent;
 
                 // 首次创建临时消息容器
@@ -266,7 +263,7 @@ function startEventStream(message) {
                 chatArea.scrollTop = chatArea.scrollHeight;
             }
 
-            if (data.result?.output?.properties?.finishReason === 'STOP') {
+            if (data.result?.metadata?.finishReason === 'STOP') {
                 currentEventSource.close();
 
                 // 流式传输完成后进行最终渲染

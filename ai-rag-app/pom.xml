@@ -37,7 +37,7 @@
     </dependencies>
 
     <build>
-        <finalName>zclau-ai-rag-app</finalName>
+        <finalName>ai-rag-app</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

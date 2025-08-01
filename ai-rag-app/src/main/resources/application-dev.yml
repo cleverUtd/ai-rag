@@ -24,7 +24,7 @@ spring:
         enabled: false
     openai:
       base-url: https://api.siliconflow.cn
-      api-key:
+      api-key: sk-pjvccnlpmovzejvfzdnfbhuqopolxhwedpegogjhecmkktzc
       embedding:
         options:
           model: BAAI/bge-m3

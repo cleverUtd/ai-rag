@@ -20,14 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * TODO
- *
- * @author 刘梓聪
- * @email liuzicong@aulton.com
- * @date 2025/3/12 21:53
- * @Copyright Copyright(c) aulton Inc.AllRightsReserved.
- **/
 @RestController()
 @CrossOrigin("*")
 @RequestMapping("/api/v1/openai/")
@@ -38,7 +30,7 @@ public class OpenAiController {
     @Autowired
     private PgVectorStore pgVectorStore;
 
-    @GetMapping("/ai/generate")
+    @GetMapping("generate")
     public ChatResponse generates(@RequestParam String model, @RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
         return chatModel.call(new Prompt(
                 message,
@@ -47,7 +39,7 @@ public class OpenAiController {
     }
 
 
-    @GetMapping(value = "/ai/generateStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "generateStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ChatResponse> generateStream(@RequestParam String model, @RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
         return chatModel.stream(new Prompt(
                 message,
@@ -55,7 +47,7 @@ public class OpenAiController {
         ));
     }
 
-    @RequestMapping(value = "/ai/generateStreamRag", method = RequestMethod.GET)
+    @RequestMapping(value = "generateStreamRag", method = RequestMethod.GET)
     public Flux<ChatResponse> generateStreamRag(@RequestParam String model, @RequestParam String ragTag, @RequestParam String message) {
 
         String SYSTEM_PROMPT = """
@@ -88,7 +80,7 @@ public class OpenAiController {
         ));
     }
 
-    @RequestMapping(value = "/ai/generateRag", method = RequestMethod.GET)
+    @RequestMapping(value = "generateRag", method = RequestMethod.GET)
     public ChatResponse generateRag(@RequestParam String model, @RequestParam String ragTag, @RequestParam String message) {
 
         String SYSTEM_PROMPT = """

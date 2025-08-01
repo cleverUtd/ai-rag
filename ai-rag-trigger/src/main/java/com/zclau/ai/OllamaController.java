@@ -19,14 +19,6 @@
 //import java.util.Map;
 //import java.util.stream.Collectors;
 //
-///**
-// * TODO
-// *
-// * @author 刘梓聪
-// * @email liuzicong@aulton.com
-// * @date 2025/3/12 21:53
-// * @Copyright Copyright(c) aulton Inc.AllRightsReserved.
-// **/
 //@RestController()
 //@CrossOrigin("*")
 //@RequestMapping("/api/v1/ollama/")
