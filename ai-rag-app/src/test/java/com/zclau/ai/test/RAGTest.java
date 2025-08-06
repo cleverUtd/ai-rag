@@ -10,7 +10,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.ollama.OllamaChatModel;
+import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.SearchRequest;
@@ -42,7 +42,7 @@ public class RAGTest {
     @Autowired
     private PgVectorStore pgVectorStore;
     @Autowired
-    private OllamaChatModel chatModel;
+    private OpenAiChatModel chatModel;
 
     @Test
     public void upload() {

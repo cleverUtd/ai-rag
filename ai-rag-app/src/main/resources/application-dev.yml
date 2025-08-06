@@ -6,41 +6,30 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-    url: jdbc:postgresql://127.0.0.1:15432/ai-rag-knowledge
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
     type: com.zaxxer.hikari.HikariDataSource
   ai:
-    ollama:
-      base-url: http://127.0.0.1:11434
-      chat:
-        options:
-          model: deepseek-r1:1.5b
-        enabled: false
-      embedding:
-        options:
-          num-batch: 512
-        model: nomic-embed-text
-        enabled: false
     openai:
-      base-url: https://api.siliconflow.cn
-      api-key: sk-pjvccnlpmovzejvfzdnfbhuqopolxhwedpegogjhecmkktzc
+      base-url: ${SPRING_AI_OPENAI_BASE_URL}
+      api-key: ${SPRING_AI_OPENAI_API_KEY}
       embedding:
         options:
-          model: BAAI/bge-m3
-          dimensions: 1024
+          model: ${SPRING_AI_OPENAI_EMBEDDING_MODEL}
+          dimensions: ${SPRING_AI_OPENAI_EMBEDDING_DIMENSIONS}
     vectorstore:
       pgvector:
         initialize-schema: true
-        dimensions: 1024
+        dimensions: ${SPRING_AI_VECTORSTORE_PGVECTOR_DIMENSIONS}
 
 
 # Redis
 redis:
   sdk:
     config:
-      host: 127.0.0.1
-      port: 16379
+      host: ${REDIS_SDK_CONFIG_HOST}
+      port: ${REDIS_SDK_CONFIG_PORT}
       pool-size: 10
       min-idle-size: 5
       idle-timeout: 30000

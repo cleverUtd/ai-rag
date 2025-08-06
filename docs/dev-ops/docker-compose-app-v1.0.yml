@@ -14,28 +14,28 @@ services:
       - ./nginx/conf/conf.d:/etc/nginx/conf.d
     privileged: true
   # ai-rag-knowledge
-#  ai-rag-app:
-#    image: zclau/ai-rag-app:1.0
-#    container_name: ai-rag-app
-#    restart: on-failure
-#    ports:
-#      - "8090:8090"
-#    environment:
-#      - TZ=PRC
-#      - SERVER_PORT=8090
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=postgres
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:15432/ai-rag-knowledge
-#      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
-#      - SPRING_AI_OPENAI_BASE_URL=https://api.siliconflow.cn
-#      - SPRING_AI_OPENAI_API_KEY=
-#      - SPRING_AI_OPENAI_EMBEDDING_MODEL=BAAI/bge-m3
-#      - REDIS_SDK_CONFIG_HOST=redis
-#      - REDIS_SDK_CONFIG_PORT=6379
-#    volumes:
-#      - ./log:/data/log
-#    logging:
-#      driver: "json-file"
-#      options:
-#        max-size: "10m"
-#        max-file: "3"
+  ai-rag-app:
+    image: zclau/ai-rag-app:1.0
+    container_name: ai-rag-app
+    restart: on-failure
+    ports:
+      - "8090:8090"
+    environment:
+      - TZ=PRC
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:15432/ai-rag-knowledge
+      - SPRING_AI_OPENAI_BASE_URL=https://api.xxx.cn
+      - SPRING_AI_OPENAI_API_KEY=pxfn*******************************************
+      - SPRING_AI_OPENAI_EMBEDDING_MODEL=BAAI/bge-m3
+      - SPRING_AI_OPENAI_EMBEDDING_DIMENSIONS=1024
+      - SPRING_AI_VECTORSTORE_PGVECTOR_DIMENSIONS=1024
+      - REDIS_SDK_CONFIG_HOST=127.0.0.1
+      - REDIS_SDK_CONFIG_PORT=6379
+    volumes:
+      - ./log:/data/log
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
